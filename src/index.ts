@@ -5,6 +5,9 @@ import { logger } from './utils/logger'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 
+// connect DB
+import './utils/connectDB'
+
 const app: Application = express()
 const PORT: number = 4000
 
