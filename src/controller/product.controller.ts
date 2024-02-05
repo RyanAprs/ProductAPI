@@ -1,24 +1,26 @@
 import type { Request, Response } from 'express'
 import { createProductValidation } from '../validations/product.validation'
 import { logger } from '../utils/logger'
-import { addProductToDB, getProductFromDB } from '../services/product.service'
+import { addProductToDB, getProductById, getProductFromDB } from '../services/product.service'
 import { v4 as uuidv4 } from 'uuid'
-import ProductType from '../types/product.type'
 
 export const getProduct = async (req: Request, res: Response) => {
   const products: any = await getProductFromDB()
   const {
-    params: { name }
+    params: { id }
   } = req
 
-  if (name) {
-    const filterProduct = products.filter((product: ProductType) => {
-      if (product.name === name) {
-        return product
-      }
-    })
-
-    if (filterProduct.length === 0) {
+  if (id) {
+    const product = await getProductById(id)
+    if (product) {
+      logger.info('Success get Product data')
+      return res.status(200).send({
+        status: true,
+        status_code: 200,
+        message: 'Get data product success',
+        data: product
+      })
+    } else {
       logger.info('Data not found')
       return res.status(404).send({
         status: false,
@@ -27,23 +29,15 @@ export const getProduct = async (req: Request, res: Response) => {
         data: {}
       })
     }
-
+  } else {
     logger.info('Success get Product data')
     return res.status(200).send({
       status: true,
       status_code: 200,
       message: 'Get data products success',
-      data: filterProduct[0]
+      data: products
     })
   }
-
-  logger.info('Success get Product data')
-  return res.status(200).send({
-    status: true,
-    status_code: 200,
-    message: 'Get data products success',
-    data: products
-  })
 }
 
 export const createProduct = async (req: Request, res: Response) => {
