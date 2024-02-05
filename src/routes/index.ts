@@ -1,6 +1,6 @@
 import type { Application, Router } from 'express'
-import { HelloRouter } from './hello'
-import { ProductRouter } from './product'
+import { HelloRouter } from './hello.route'
+import { ProductRouter } from './product.route'
 
 const _routes: Array<[string, Router]> = [
   ['/hello', HelloRouter],
