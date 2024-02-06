@@ -1,7 +1,13 @@
 import type { Request, Response } from 'express'
 import { createProductValidation, updateProductValidation } from '../validations/product.validation'
 import { logger } from '../utils/logger'
-import { addProductToDB, getProductById, getProductFromDB, updateProductById } from '../services/product.service'
+import {
+  addProductToDB,
+  deleteProductById,
+  getProductById,
+  getProductFromDB,
+  updateProductById
+} from '../services/product.service'
 import { v4 as uuidv4 } from 'uuid'
 
 export const getProduct = async (req: Request, res: Response) => {
@@ -79,7 +85,7 @@ export const updateProduct = async (req: Request, res: Response) => {
   const { error, value } = updateProductValidation(req.body)
 
   if (error) {
-    logger.error('ERR: Product - create = ', error.details[0].message)
+    logger.error('ERR: Product - update = ', error.details[0].message)
     return res.status(422).send({
       status: false,
       status_code: 422,
@@ -88,8 +94,8 @@ export const updateProduct = async (req: Request, res: Response) => {
   }
 
   try {
-    const product = await updateProductById(id, value)
-    if (product) {
+    const result = await updateProductById(id, value)
+    if (result) {
       logger.info('Updated product success')
       return res.status(200).send({
         status: true,
@@ -106,7 +112,40 @@ export const updateProduct = async (req: Request, res: Response) => {
       })
     }
   } catch (error) {
-    logger.error('ERR: Product - create = ', error)
+    logger.error('ERR: Product - update = ', error)
+    return res.status(422).send({
+      status: false,
+      status_code: 422,
+      message: error
+    })
+  }
+}
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  const {
+    params: { id }
+  } = req
+
+  try {
+    const result = await deleteProductById(id)
+    if (result) {
+      logger.info('Deleted product success')
+      return res.status(200).send({
+        status: true,
+        status_code: 200,
+        message: 'Deleted product success'
+      })
+    } else {
+      logger.info('Data not found')
+      return res.status(404).send({
+        status: false,
+        status_code: 404,
+        message: 'Data not found',
+        data: {}
+      })
+    }
+  } catch (error) {
+    logger.error('ERR: Product - delete = ', error)
     return res.status(422).send({
       status: false,
       status_code: 422,
