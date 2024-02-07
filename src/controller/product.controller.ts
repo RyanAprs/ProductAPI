@@ -11,7 +11,6 @@ import {
 import { v4 as uuidv4 } from 'uuid'
 
 export const getProduct = async (req: Request, res: Response) => {
-  const products: any = await getProductFromDB()
   const {
     params: { id }
   } = req
@@ -27,7 +26,6 @@ export const getProduct = async (req: Request, res: Response) => {
         data: product
       })
     } else {
-      logger.info('Data not found')
       return res.status(404).send({
         status: false,
         status_code: 404,
@@ -36,6 +34,7 @@ export const getProduct = async (req: Request, res: Response) => {
       })
     }
   } else {
+    const products: any = await getProductFromDB()
     logger.info('Success get Product data')
     return res.status(200).send({
       status: true,
