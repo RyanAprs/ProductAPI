@@ -1,6 +1,6 @@
 import { logger } from '../utils/logger'
 import productModel from '../models/product.model'
-import ProductType from '../types/product.type'
+import type ProductType from '../types/product.type'
 
 export const getProductFromDB = async () => {
   return await productModel

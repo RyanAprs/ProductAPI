@@ -1,4 +1,4 @@
-import mongoose, { ConnectOptions } from 'mongoose'
+import mongoose from 'mongoose'
 import config from '../config/environment'
 import { logger } from './logger'
 
@@ -7,8 +7,8 @@ mongoose
   .then(() => {
     logger.info('Connected to MongoDB')
   })
-  .catch((eror) => {
+  .catch((error) => {
     logger.info('Failed to connect to MongoDB')
-    logger.error(eror)
+    logger.error(error)
     process.exit(1)
   })
