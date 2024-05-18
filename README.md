@@ -11,7 +11,7 @@
 Dillinger uses a number of open source projects to work properly:
 
 - Backend: Node.js, Express.js.
-- Database: Uses MongoDB as a NoSQL database to store blog, user.
+- Database: Uses MongoDB as a NoSQL database to store product, user.
 ----
 ## Installation
 1. Make sure you have Node.js (version 12 or higher) and npm (Node Package Manager) installed on your system. You also need database management software like MongoDB.
